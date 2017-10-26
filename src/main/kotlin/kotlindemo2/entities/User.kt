@@ -8,9 +8,6 @@ class User(
         var id: Long = 0,
 
         @Column(unique = true)
-        val email: String = "",
-
-        @Column(unique = true)
         var username: String = "",
 
         var password: String = ""
