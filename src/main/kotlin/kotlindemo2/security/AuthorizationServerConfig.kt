@@ -1,5 +1,6 @@
-package kotlindemo2.service
+package kotlindemo2.security
 
+import kotlindemo2.service.UserDetailsServiceImpl
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
