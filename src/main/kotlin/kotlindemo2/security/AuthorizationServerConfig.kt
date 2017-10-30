@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @EnableAuthorizationServer
 class AuthorizationServerConfig(val authenticationManager: AuthenticationManager, val userDetailsService: UserDetailsServiceImpl) : AuthorizationServerConfigurerAdapter() {
 
-
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.inMemory()
                 .withClient("kotlin").secret("123456")
