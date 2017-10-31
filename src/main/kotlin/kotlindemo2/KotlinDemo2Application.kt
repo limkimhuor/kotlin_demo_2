@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean
 class KotlinDemo2Application {
     @Bean
     fun init(userDetailsServiceImpl: UserDetailsServiceImpl) = CommandLineRunner {
-        userDetailsServiceImpl.save(User(1, "admin", "123456"))
     }
 }
 

@@ -9,7 +9,7 @@ class Post {
 
     var title: String? = null
     var content: String? = null
-    var creator_id: Long? = null
+    var creatorId: Long? = null
 
     internal constructor()
 

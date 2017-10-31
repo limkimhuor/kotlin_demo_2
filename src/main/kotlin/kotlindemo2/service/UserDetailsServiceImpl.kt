@@ -1,9 +1,9 @@
 package kotlindemo2.service
 
+import kotlindemo2.entities.CustomUserDetail
 import kotlindemo2.entities.User
 import kotlindemo2.repositories.UserRepository
 import org.springframework.context.annotation.Bean
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-open class UserDetailsServiceImpl(val userRepository: UserRepository) : UserDetailsService {
+class UserDetailsServiceImpl(val userRepository: UserRepository) : UserDetailsService {
     @Transactional(readOnly = true)
     @Throws(UsernameNotFoundException::class)
-    override fun loadUserByUsername(username: String): UserDetails {
+    override fun loadUserByUsername(username: String): CustomUserDetail? {
 
         val user = userRepository.findByUsername(username) ?: throw UsernameNotFoundException(username)
-        return org.springframework.security.core.userdetails.User(user.username, user.password, emptyList())
+        return CustomUserDetail(user)
     }
 
     val passwordEncoder: PasswordEncoder

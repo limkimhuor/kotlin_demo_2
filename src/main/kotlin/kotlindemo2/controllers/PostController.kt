@@ -1,9 +1,12 @@
 package kotlindemo2.controllers
 
+import kotlindemo2.entities.CustomUserDetail
 import kotlindemo2.entities.Post
 import kotlindemo2.repositories.PostRepository
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -14,6 +17,9 @@ class PostController(private var postRepo: PostRepository) {
 
     @PostMapping("/create")
     fun createPost(@RequestBody post: Post): ResponseEntity<Post>? {
+        val authentication: Authentication = SecurityContextHolder.getContext().authentication
+        val user_detail: CustomUserDetail = authentication.principal as CustomUserDetail
+        post.creatorId = user_detail.user!!.id
         postRepo.save(post)
         return ResponseEntity.ok(post)
     }
