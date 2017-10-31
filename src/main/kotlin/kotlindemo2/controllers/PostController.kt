@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/posts")
 class PostController(private var postRepo: PostRepository) {
     @GetMapping("/all")
-    fun getAllPost() : ResponseEntity<MutableList<Post>>? = ResponseEntity.ok(postRepo.findAll())
+    fun getAllPost() : ResponseEntity<MutableList<Post>>? {
+        return ResponseEntity.ok(postRepo.findByCreatorId(authenticatedUserId()))
+    }
 
     @PostMapping("/create")
     fun createPost(@RequestBody post: Post): ResponseEntity<Post>? {
-        val authentication: Authentication = SecurityContextHolder.getContext().authentication
-        val user_detail: CustomUserDetail = authentication.principal as CustomUserDetail
-        post.creatorId = user_detail.user!!.id
+        post.creatorId = authenticatedUserId()
         postRepo.save(post)
         return ResponseEntity.ok(post)
     }
@@ -31,14 +31,14 @@ class PostController(private var postRepo: PostRepository) {
     }
 
     @PutMapping("/{id}")
-    fun updatePost(@PathVariable id: Long, @RequestBody new_post: Post) : ResponseEntity<Post>? {
+    fun updatePost(@PathVariable id: Long, @RequestBody newPost: Post) : ResponseEntity<Post>? {
         try {
             val post = postRepo.findOne(id)
-            new_post.title?.let {
-                post.title = new_post.title
+            newPost.title?.let {
+                post.title = newPost.title
             }
-            new_post.content?.let {
-                post.content = new_post.content
+            newPost.content?.let {
+                post.content = newPost.content
             }
             postRepo.save(post)
             return ResponseEntity.ok(post)
@@ -55,5 +55,11 @@ class PostController(private var postRepo: PostRepository) {
         } catch (e: EmptyResultDataAccessException) {
             return "Delete fail"
         }
+    }
+
+    private fun authenticatedUserId(): Long? {
+        val authentication: Authentication = SecurityContextHolder.getContext().authentication
+        val userDetail: CustomUserDetail = authentication.principal as CustomUserDetail
+        return userDetail.user!!.id
     }
 }
