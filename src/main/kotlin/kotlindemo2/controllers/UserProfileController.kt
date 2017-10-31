@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/profiles")
-class UserUserProfileController(private val profileRepo: UserProfileRepository) {
+class UserProfileController(private val profileRepo: UserProfileRepository) {
     @GetMapping("/all")
     fun getAllUserProfile() : ResponseEntity<MutableList<UserProfile>>? = ResponseEntity.ok(profileRepo.findAll())
 
